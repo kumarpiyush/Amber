@@ -19,7 +19,7 @@ namespace Amber
 
         int currentPage = 1;
         const int numLines = 50;
-        const int lineWidth = 30;
+        const int lineWidth = 40;
         const int pageWidth = 2000;
 
         public MainPage()
@@ -72,12 +72,13 @@ namespace Amber
 
         private async Task LoadPageTask(int pageNum)
         {
-            var book = await KnownFolders.DocumentsLibrary.GetFolderAsync(bookName);
+            DrawLines();
+
+            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
             var pageFile = await book.TryGetItemAsync(string.Format("{0}{1}", pageNum, pageExtension)) as StorageFile;
             if (pageFile == null)
             {
                 // TODO : distinguish page load fail vs a new page
-                DrawLines();
                 return;
             }
 
