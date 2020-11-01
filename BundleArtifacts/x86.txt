@@ -1,2 +1,2 @@
-MainPackage=E:\Amber\bin\x86\Release\Amber_0.4.0.0_x86.appx
-SymbolPackage=E:\Amber\obj\x86\Release\Symbols\Amber_0.4.0.0_x86.appxsym
+MainPackage=E:\Amber\bin\x86\Debug\Amber_1.0.0.0_x86_Debug.appx
+SymbolPackage=E:\Amber\obj\x86\Debug\Symbols\Amber_1.0.0.0_x86_Debug.appxsym

@@ -9,7 +9,7 @@
   <Identity
     Name="61fa0aa3-705a-40e6-979f-2e2f9be43312"
     Publisher="CN=pikum"
-    Version="0.4.0.0" />
+    Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="61fa0aa3-705a-40e6-979f-2e2f9be43312" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

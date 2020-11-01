@@ -7,6 +7,7 @@ using Windows.Storage;
 using Windows.UI.Input.Inking;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
 namespace Amber
@@ -34,18 +35,12 @@ namespace Amber
 
         private void DrawLines()
         {
-            var builder = new InkStrokeBuilder();
-            builder.SetDefaultDrawingAttributes(
-                new InkDrawingAttributes()
-                {
-                    Size = new Size(1, 1),
-                    Color = new Windows.UI.Color() { R = 235, G = 235, B = 235, A = 120 }
-                });
-
             for (int i = 2; i < numLines; i++)
             {
-                var line = builder.CreateStroke(new List<Point>() { new Point(0, i * lineWidth), new Point(pageWidth, i * lineWidth) });
-                mainCanvas.InkPresenter.StrokeContainer.AddStroke(line);
+                var line = new Line() { X1 = 0, Y1 = i * lineWidth, X2 = pageWidth, Y2 = i * lineWidth };
+                line.StrokeThickness = 2;
+                line.Stroke = new SolidColorBrush() { Color = new Windows.UI.Color() { R = 235, G = 235, B = 235, A = 120 } };
+                outerCanvas.Children.Add(line);
             }
         }
 
@@ -83,7 +78,7 @@ namespace Amber
             {
                 // TODO : distinguish page load fail vs a new page
                 DrawLines();
-                return; // unable to load file
+                return;
             }
 
             var readStream = await pageFile.OpenAsync(FileAccessMode.Read);

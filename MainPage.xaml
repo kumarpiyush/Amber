@@ -9,7 +9,9 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="LoadPage">
     <Grid>
+        <Canvas x:Name="outerCanvas"></Canvas>
         <InkCanvas x:Name="mainCanvas"></InkCanvas>
+        
         <StackPanel x:Name="mainToolbar" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal">
             <Button x:Name="saveButton" Content="Save" Height="48"/>
             <Button x:Name="loadButton" Content="Load" Height="48"/>
