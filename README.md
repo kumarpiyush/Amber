@@ -7,7 +7,6 @@ Amber is an attempt to create a notebook-like experience while trying to match t
 
 ## Feature roadmap
 - Change default stroke eraser to circular eraser
-- Preset most common pens
 - Add support for Lasso tool for selection
 - Support freestyle moving selected strokes
 - Allow jumping directly to page
