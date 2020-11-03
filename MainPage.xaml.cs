@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Storage;
-using Windows.UI.Input.Inking;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -31,6 +24,19 @@ namespace Amber
             loadButton.Click += LoadPage;
             nextPageButton.Click += NextPage;
             previousPageButton.Click += PrevPage;
+
+            redButton.Click += (a, b) => SetPenColor(7);
+            blueButton.Click += (a, b) => SetPenColor(16);
+            blackButton.Click += (a, b) => SetPenColor(0);
+            greenButton.Click += (a, b) => SetPenColor(14);
+        }
+
+        private void SetPenColor(int colorIndex)
+        {
+            if (writingTools.ActiveTool is InkToolbarBallpointPenButton)
+            {
+                (writingTools.ActiveTool as InkToolbarBallpointPenButton).SelectedBrushIndex = colorIndex;
+            }
         }
 
         private void DrawLines()
@@ -42,72 +48,6 @@ namespace Amber
                 line.Stroke = new SolidColorBrush() { Color = new Windows.UI.Color() { R = 235, G = 235, B = 235, A = 120 } };
                 outerCanvas.Children.Add(line);
             }
-        }
-
-        private async void SavePage(object sender, RoutedEventArgs e)
-        {
-            await SavePageTask(currentPage);
-        }
-
-        private async void LoadPage(object sender, RoutedEventArgs e)
-        {
-            await LoadPageTask(currentPage);
-        }
-
-        private async Task SavePageTask(int pageNum)
-        {
-            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
-            var pageFile = await book.CreateFileAsync(string.Format("{0}{1}", pageNum, pageExtension), CreationCollisionOption.OpenIfExists);
-
-            CachedFileManager.DeferUpdates(pageFile);
-            var writeStream = await pageFile.OpenAsync(FileAccessMode.ReadWrite);
-            using (var outStream = writeStream.GetOutputStreamAt(0))
-            {
-                await mainCanvas.InkPresenter.StrokeContainer.SaveAsync(outStream);
-                await outStream.FlushAsync();
-            }
-            writeStream.Dispose();
-            await CachedFileManager.CompleteUpdatesAsync(pageFile);
-        }
-
-        private async Task LoadPageTask(int pageNum)
-        {
-            DrawLines();
-
-            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
-            var pageFile = await book.TryGetItemAsync(string.Format("{0}{1}", pageNum, pageExtension)) as StorageFile;
-            if (pageFile == null)
-            {
-                // TODO : distinguish page load fail vs a new page
-                return;
-            }
-
-            var readStream = await pageFile.OpenAsync(FileAccessMode.Read);
-            using (var inStream = readStream.GetInputStreamAt(0))
-            {
-                await mainCanvas.InkPresenter.StrokeContainer.LoadAsync(inStream);
-            }
-            readStream.Dispose();
-        }
-
-        private async void NextPage(object sender, RoutedEventArgs e)
-        {
-            await SavePageTask(currentPage);
-            mainCanvas.InkPresenter.StrokeContainer.Clear();
-            currentPage++;
-            pageNumber.Text = currentPage.ToString();
-            await LoadPageTask(currentPage);
-        }
-
-        private async void PrevPage(object sender, RoutedEventArgs e)
-        {
-            if (currentPage == 1) return;
-
-            await SavePageTask(currentPage);
-            mainCanvas.InkPresenter.StrokeContainer.Clear();
-            currentPage--;
-            pageNumber.Text = currentPage.ToString();
-            await LoadPageTask(currentPage);
         }
     }
 }

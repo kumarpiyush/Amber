@@ -9,16 +9,39 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="LoadPage">
     <Grid>
-        <Canvas x:Name="outerCanvas"></Canvas>
-        <InkCanvas x:Name="mainCanvas"></InkCanvas>
-        
+        <Canvas x:Name="outerCanvas"/>
+        <InkCanvas x:Name="mainCanvas"/>
+
         <StackPanel x:Name="mainToolbar" VerticalAlignment="Top" HorizontalAlignment="Center" Orientation="Horizontal">
+            <!-- load and save -->
             <Button x:Name="saveButton" Content="Save" Height="48"/>
             <Button x:Name="loadButton" Content="Load" Height="48"/>
-            <InkToolbar x:Name="defaultTools" TargetInkCanvas="{x:Bind mainCanvas}" UseLayoutRounding="True"/>
+
+            <!-- toolbar for writing -->
+            <InkToolbar x:Name="writingTools" TargetInkCanvas="{x:Bind mainCanvas}" InitialControls="AllExceptPens">
+                <InkToolbarBallpointPenButton SelectedStrokeWidth="1"/>
+                <InkToolbarPencilButton SelectedStrokeWidth="3"/>
+                <InkToolbarHighlighterButton/>
+            </InkToolbar>
+
+            <!-- page navigation -->
             <Button x:Name="previousPageButton" Content="-" Height="48"/>
             <Button x:Name="nextPageButton" Content="+" Height="48"/>
             <TextBox x:Name="pageNumber" Text="1" Height="48" Width="48" TextAlignment="Center" Padding="0,12,0,0" />
+
+            <!-- preset colors picker -->
+            <Button x:Name="blueButton" Background="Transparent" Height="48" Width="50">
+                <Ellipse Width="30" Height="30" Fill="Blue"/>
+            </Button>
+            <Button x:Name="redButton" Background="Transparent" Height="48" Width="50">
+                <Ellipse Width="30" Height="30" Fill="Red"/>
+            </Button>
+            <Button x:Name="greenButton" Background="Transparent" Height="48" Width="50">
+                <Ellipse Width="30" Height="30" Fill="Green"/>
+            </Button>
+            <Button x:Name="blackButton" Background="Transparent" Height="48" Width="50">
+                <Ellipse Width="30" Height="30" Fill="Black"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>
