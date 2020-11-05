@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -52,6 +53,17 @@ namespace Amber
                 await mainCanvas.InkPresenter.StrokeContainer.LoadAsync(inStream);
             }
             readStream.Dispose();
+        }
+
+        private void SetupBackgroundSave()
+        {
+            var timer = ThreadPoolTimer.CreatePeriodicTimer(async (src) =>
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    await SavePageTask(currentPage);
+                });
+            }, TimeSpan.FromSeconds(30));
         }
     }
 }

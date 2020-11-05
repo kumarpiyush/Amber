@@ -42,6 +42,8 @@ namespace Amber
             blueButton.Click += (a, b) => SetPenColor(16);
             blackButton.Click += (a, b) => SetPenColor(0);
             greenButton.Click += (a, b) => SetPenColor(14);
+
+            SetupBackgroundSave();
         }
 
         private void SetPenColor(int colorIndex)
