@@ -1,4 +1,4 @@
-﻿using Windows.UI.Xaml;
+﻿using Windows.UI.Input.Inking;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -20,11 +20,24 @@ namespace Amber
             this.InitializeComponent();
             mainCanvas.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse | Windows.UI.Core.CoreInputDeviceTypes.Pen;
 
+            // lasso selection event handlers
+            mainCanvas.InkPresenter.InputProcessingConfiguration.RightDragAction = InkInputRightDragAction.LeaveUnprocessed;
+            mainCanvas.InkPresenter.UnprocessedInput.PointerPressed += LassoPointerPressed;
+            mainCanvas.InkPresenter.UnprocessedInput.PointerMoved += LassoPointerMoved;
+            mainCanvas.InkPresenter.UnprocessedInput.PointerReleased += LassoPointerReleased;
+            mainCanvas.InkPresenter.StrokeInput.StrokeStarted += PenOrEraserStarted;
+            mainCanvas.InkPresenter.StrokesErased += PenOrEraserStarted;
+            eraseSelection.Click += EraseLassoSelection;
+
+            // save/load events
             saveButton.Click += SavePage;
             loadButton.Click += LoadPage;
+
+            // page navigation events
             nextPageButton.Click += NextPage;
             previousPageButton.Click += PrevPage;
 
+            // color picker events
             redButton.Click += (a, b) => SetPenColor(7);
             blueButton.Click += (a, b) => SetPenColor(16);
             blackButton.Click += (a, b) => SetPenColor(0);

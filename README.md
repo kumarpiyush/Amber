@@ -6,7 +6,7 @@ While Microsoft Whiteboard offers a lot of great tools for handwriting, it is to
 Amber is an attempt to create a notebook-like experience while trying to match the tools and experience of Microsoft Whiteboard.
 
 ## Feature roadmap
-- Change default stroke eraser to circular eraser
-- Add support for Lasso tool for selection
+- Undo/redo support
 - Support freestyle moving selected strokes
+- Change default stroke eraser to circular eraser
 - Allow jumping directly to page
