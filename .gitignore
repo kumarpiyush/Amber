@@ -3,3 +3,5 @@ bin
 obj
 Amber_TemporaryKey.pfx
 .vs
+Amber.csproj.user
+BundleArtifacts

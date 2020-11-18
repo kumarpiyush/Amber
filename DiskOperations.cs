@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.System.Threading;
@@ -16,6 +17,20 @@ namespace Amber
 
         private async void LoadPage(object sender, RoutedEventArgs e)
         {
+            await LoadPageTask(currentPage);
+        }
+
+        private async void LoadLastPage(object sender, RoutedEventArgs e)
+        {
+            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
+            var lastPage = (await book.GetFilesAsync())
+                            .Select(f => Utils.TryCastInt(f.DisplayName))
+                            .Where(f => f!=-1)
+                            .OrderBy(f => -f)
+                            .FirstOrDefault();
+            if (lastPage <= 0) lastPage = 1;
+            currentPage = lastPage;
+            pageNumber.Text = currentPage.ToString();
             await LoadPageTask(currentPage);
         }
 
