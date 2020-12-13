@@ -7,22 +7,37 @@ namespace Amber
     {
         private async void NextPage(object sender, RoutedEventArgs e)
         {
-            await SavePageTask(currentPage);
-            mainCanvas.InkPresenter.StrokeContainer.Clear();
-            currentPage++;
-            pageNumber.Text = currentPage.ToString();
-            await LoadPageTask(currentPage);
+            await semaphor.WaitAsync();
+            try
+            {
+                await SavePageTask(currentPage);
+                currentPage++;
+                pageNumber.Text = currentPage.ToString();
+                mainCanvas.InkPresenter.StrokeContainer.Clear();
+                await LoadPageTask(currentPage);
+            }
+            finally
+            {
+                semaphor.Release();
+            }
         }
 
         private async void PrevPage(object sender, RoutedEventArgs e)
         {
-            if (currentPage == 1) return;
-
-            await SavePageTask(currentPage);
-            mainCanvas.InkPresenter.StrokeContainer.Clear();
-            currentPage--;
-            pageNumber.Text = currentPage.ToString();
-            await LoadPageTask(currentPage);
+            await semaphor.WaitAsync();
+            try
+            {
+                if (currentPage == 1) return;
+                await SavePageTask(currentPage);
+                currentPage--;
+                pageNumber.Text = currentPage.ToString();
+                mainCanvas.InkPresenter.StrokeContainer.Clear();
+                await LoadPageTask(currentPage);
+            }
+            finally
+            {
+                semaphor.Release();
+            }
         }
     }
 }

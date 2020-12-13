@@ -1,4 +1,5 @@
-﻿using Windows.UI.Input.Inking;
+﻿using System.Threading;
+using Windows.UI.Input.Inking;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -11,6 +12,10 @@ namespace Amber
         const string bookName = "AmberBook";   // TODO feature : support multiple books
 
         int currentPage = 1;
+
+        // page synchronization
+        static SemaphoreSlim semaphor = new SemaphoreSlim(1, 1);
+
         const int numLines = 50;
         const int lineWidth = 40;
         const int pageWidth = 2000;
