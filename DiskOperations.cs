@@ -82,7 +82,15 @@ namespace Amber
             {
                 await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                 {
-                    await SavePageTask(currentPage);
+                    await semaphor.WaitAsync();
+                    try
+                    {
+                        await SavePageTask(currentPage);
+                    }
+                    finally
+                    {
+                        semaphor.Release();
+                    }
                 });
             }, TimeSpan.FromSeconds(30));
         }
