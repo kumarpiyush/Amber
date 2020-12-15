@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.System.Threading;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,9 +21,16 @@ namespace Amber
             await LoadPageTask(currentPage);
         }
 
-        private async void LoadLastPage(object sender, RoutedEventArgs e)
+        private async void FirstLoad(object sender, RoutedEventArgs e)
         {
-            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
+            var picker = new FolderPicker
+            {
+                ViewMode = PickerViewMode.Thumbnail,
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            picker.FileTypeFilter.Add("*");
+            book = await picker.PickSingleFolderAsync();
+
             var lastPage = (await book.GetFilesAsync())
                             .Select(f => Utils.TryCastInt(f.DisplayName))
                             .Where(f => f!=-1)
@@ -36,7 +44,6 @@ namespace Amber
 
         private async Task SavePageTask(int pageNum)
         {
-            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
             var pageFile = await book.CreateFileAsync(string.Format("{0}{1}", pageNum, pageExtension), CreationCollisionOption.OpenIfExists);
 
             CachedFileManager.DeferUpdates(pageFile);
@@ -54,7 +61,6 @@ namespace Amber
         {
             DrawLines();
 
-            var book = await KnownFolders.DocumentsLibrary.CreateFolderAsync(bookName, CreationCollisionOption.OpenIfExists);
             var pageFile = await book.TryGetItemAsync(string.Format("{0}{1}", pageNum, pageExtension)) as StorageFile;
             if (pageFile == null)
             {

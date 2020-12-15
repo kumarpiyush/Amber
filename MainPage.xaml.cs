@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Windows.Storage;
 using Windows.UI.Input.Inking;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -9,7 +10,7 @@ namespace Amber
     public sealed partial class MainPage : Page
     {
         const string pageExtension = ".gif";
-        const string bookName = "AmberBook";   // TODO feature : support multiple books
+        private StorageFolder book;
 
         int currentPage = 1;
 

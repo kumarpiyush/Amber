@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="LoadLastPage">
+    Loaded="FirstLoad">
     <Grid>
         <Canvas x:Name="outerCanvas"/>
         <InkCanvas x:Name="mainCanvas"/>
